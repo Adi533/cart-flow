@@ -5,8 +5,8 @@ import { addToCart,removeFromCart } from './store/cartSlice';
 function App() {
   const dispatch = useDispatch();
   const {products,cart,total}=useSelector((state)=>state.cart);
-  const purchaseHandler = (e)=>{
-    let name = e.target.options[e.target.selectedIndex].text;
+  const purchaseHandler = (e,product)=>{
+    let name = product.name+":"+product.price;
     let price = parseInt(e.target.value);
     let itemObj = {name,price};
     dispatch(addToCart(itemObj));
@@ -18,15 +18,9 @@ function App() {
   return (
     <div className="App">
       <h1>PRODUCTS</h1>
-      <select onChange={(e)=>purchaseHandler(e)}>
-        {products.map((product,index)=>{
-          return (
-            <option value={product.price} key={index}>
-              {product.name}:{product.price}
-            </option>
-          )
+      {products.map((product,index)=>{
+          return <li key ={index} value={product.price} onClick={(e)=>purchaseHandler(e,product)}>{product.name}:{product.price}</li>
         })}
-      </select> 
 
       <hr />
       <h2>Carts</h2>
